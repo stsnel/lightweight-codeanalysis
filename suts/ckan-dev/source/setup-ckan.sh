@@ -24,18 +24,18 @@ pip3 install uwsgi
 sudo -u postgres psql -c "CREATE USER ckan_default WITH PASSWORD 'pass';"
 sudo -u postgres createdb -O ckan_default ckan_default -E utf-8
 
-wget https://archive.apache.org/dist/lucene/solr/6.6.6/solr-6.6.6.tgz
-tar xzf solr-6.6.6.tgz solr-6.6.6/bin/install_solr_service.sh --strip-components=2
+SOLR_VERSION="6.5.1"
+SOLR_CORE_NAME="ckan"
+SOLR_CORE_DIR="/var/solr/data/ckan"
+SOLR_CORE_SCHEMA="${SOLR_CORE_DIR}/conf/managed-schema"
+wget https://archive.apache.org/dist/lucene/solr/${SOLR_VERSION}/solr-${SOLR_VERSION}.tgz
+tar xzf solr-${SOLR_VERSION}.tgz solr-${SOLR_VERSION}/bin/install_solr_service.sh --strip-components=2
 sudo chmod +x ./install_solr_service.sh 
-sudo bash ./install_solr_service.sh solr-6.6.6.tgz
+sudo bash ./install_solr_service.sh solr-${SOLR_VERSION}.tgz
 
-cat > /tmp/solr.conf << SOLRCONF
-[Service]
-ReadWritePaths=/var/lib/solr
-SOLRCONF
-
-sudo mv /opt/solr-6.6.6/server/solr/configsets/_default/conf/managed-schema /opt/solr-6.6.6/server/solr/configsets/_default/conf/managed-schema.bak
-sudo ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /opt/solr-6.6.6/server/solr/configsets/_default/conf/managed-schema
+sudo -u solr /opt/solr-$SOLR_VERSION/bin/solr create_core -c "$SOLR_CORE_NAME"
+sudo rm "$SOLR_CORE_SCHEMA"
+sudo ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml "$SOLR_CORE_SCHEMA"
 sudo systemctl daemon-reload
 sudo systemctl restart solr
 
@@ -48,6 +48,8 @@ sudo cp /usr/lib/ckan/default/src/ckan/wsgi.py /etc/ckan/default/
 sudo cp /usr/lib/ckan/default/src/ckan/ckan-uwsgi.ini /etc/ckan/default/
 sudo perl -pi.bak -e 's/^ckan\.site_url =/ckan.site_url = http:\/\/localhost:8080/g' /etc/ckan/default/ckan.ini
 sudo perl -pi.bak -e 's/^\#ckan\.storage_path/ckan.storage_path/' /etc/ckan/default/ckan.ini
+sudo perl -pi.bak -e 's/^\#solr_url = http:\/\/127.0.0.1:8983\/solr/solr_url = http:\/\/127.0.0.1:8983\/solr\/ckan/' /etc/ckan/default/ckan.ini
+
 sudo chmod -R 0777 /usr/lib/ckan/default/src/ckan/ckan/public/base
 
 ckan --config /etc/ckan/default/ckan.ini db init
@@ -109,11 +111,14 @@ server {
 }
 NGINX.conf
 sudo install -m 0644 /tmp/ckan-nginx.conf /etc/nginx/sites-available/ckan
-sudo rm -vi /etc/nginx/sites-enabled/default
+sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/ckan /etc/nginx/sites-enabled/ckan
+sudo systemctl restart nginx
+
+sudo mkdir  /var/lib/ckan
+sudo chown -R www-data:www-data /var/lib/ckan
 
 sudo supervisorctl reload
-sudo service nginx restart
 
 # Create test users and data
 ckan -c /etc/ckan/default/ckan.ini seed basic
