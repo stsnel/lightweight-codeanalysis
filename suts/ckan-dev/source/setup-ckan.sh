@@ -12,7 +12,7 @@ sudo chmod 0777 /coverage
 sudo apt update
 sudo apt install -y redis-server nginx supervisor python3-distutils python3-pip \
                     python3-dev python3-pip python3-venv git-core \
-                    postgresql libpq5 libpq-dev supervisor openjdk-8-jdk
+                    postgresql libpq5 libpq-dev supervisor openjdk-8-jdk sqlite3
 
 sudo mkdir -p /usr/lib/ckan/default
 sudo chown `whoami` /usr/lib/ckan/default
