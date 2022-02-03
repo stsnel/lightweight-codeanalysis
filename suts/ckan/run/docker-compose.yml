@@ -9,6 +9,7 @@ volumes:
   ckan_config:
   ckan_home:
   ckan_storage:
+  ckan_coveragedata:
   pg_data:
   solr_data:
 
@@ -41,6 +42,7 @@ services:
       - ckan_config:/etc/ckan
       - ckan_home:/usr/lib/ckan
       - ckan_storage:/var/lib/ckan
+      - ckan_coveragedata:/coverage
 
   datapusher:
     container_name: datapusher
