@@ -6,6 +6,9 @@
 set -e
 set -x
 
+sudo mkdir /coverage
+sudo chmod 0777 /coverage
+
 sudo apt update
 sudo apt install -y redis-server nginx supervisor python3-distutils python3-pip \
                     python3-dev python3-pip python3-venv git-core \
@@ -18,7 +21,8 @@ source /usr/lib/ckan/default/bin/activate
 pip3 install --upgrade requests==2.26.0
 pip3 install setuptools==44.1.0
 pip3 install --upgrade pip
-pip3 install -e 'git+https://github.com/ckan/ckan.git@ckan-2.9.4#egg=ckan[requirements]'
+pip3 install -e 'git+https://github.com/stsnel/ckan.git@2.9.3-testar#egg=ckan[requirements]'
+pip3 install -e 'git+https://github.com/stsnel/coveragepy.git@6.2-local#egg=coverage[requirements]'
 pip3 install uwsgi
 
 sudo -u postgres psql -c "CREATE USER ckan_default WITH PASSWORD 'pass';"
