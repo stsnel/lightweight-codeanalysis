@@ -1,6 +1,11 @@
 #!/bin/bash
-git clone https://github.com/ckan/ckan.git
-cd ckan
-git checkout 872b45a826fe81cf334c211eabe992b8082512cd
-cp ../docker-compose-build.yml contrib/docker/docker-compose.yml
 
+if [ ! -d ckan ]
+then git clone https://github.com/stsnel/ckan.git
+fi
+
+cd ckan
+git checkout 2.9.3-testar
+cp ../docker-compose-build.yml contrib/docker/docker-compose.yml
+cp ../Dockerfile .
+docker build . --no-cache -t 378672356020.dkr.ecr.us-east-1.amazonaws.com/ckan
