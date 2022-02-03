@@ -15,7 +15,7 @@ volumes:
 services:
   ckan:
     container_name: ckan
-    image: 378672356020.dkr.ecr.us-east-1.amazonaws.com/ckan
+    image: 378672356020.dkr.ecr.us-east-1.amazonaws.com/ckan:latest
     links:
       - db
       - solr
