@@ -72,6 +72,9 @@ RUN ckan-pip3 install -U pip && \
     ckan-pip3 install --upgrade --no-cache-dir -r $CKAN_VENV/src/ckan/requirements.txt && \
     ckan-pip3 install -e $CKAN_VENV/src/ckan/ && \
     ckan-pip3 install wheel && \
+    ckan-pip3 install ckanext-showcase && \
+    ckan-pip3 install -e "git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy" && \
+    ckan-pip3 install -r /usr/lib/ckan/venv/src/ckanext-hierarchy/requirements.txt && \
     ckan-pip3 install git+https://github.com/stsnel/coveragepy.git@6.2-local && \
     ln -s $CKAN_VENV/src/ckan/ckan/config/who.ini $CKAN_CONFIG/who.ini && \
     cp -v $CKAN_VENV/src/ckan/contrib/docker/ckan-entrypoint.sh /ckan-entrypoint.sh && \
