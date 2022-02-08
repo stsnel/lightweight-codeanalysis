@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+# This is a modified version of the official CKAN entrypoint script
+
 # URL for the primary database, in the format expected by sqlalchemy (required
 # unless linked to a container called 'db')
 : ${CKAN_SQLALCHEMY_URL:=}
