@@ -25,9 +25,15 @@ pip3 install -e 'git+https://github.com/stsnel/ckan.git@2.9.3-testar#egg=ckan[re
 pip3 install -e 'git+https://github.com/stsnel/coveragepy.git@6.2-local#egg=coverage[requirements]'
 pip3 install uwsgi
 
+cd /usr/lib/ckan/default/src
+pip3 install -e "git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy"
+pip3 install -r ckanext-hierarchy/requirements.txt
+pip3 install ckanext-showcase
+
 sudo -u postgres psql -c "CREATE USER ckan_default WITH PASSWORD 'pass';"
 sudo -u postgres createdb -O ckan_default ckan_default -E utf-8
 
+cd
 SOLR_VERSION="6.5.1"
 SOLR_CORE_NAME="ckan"
 SOLR_CORE_DIR="/var/solr/data/ckan"
@@ -52,6 +58,7 @@ sudo cp /usr/lib/ckan/default/src/ckan/wsgi.py /etc/ckan/default/
 sudo cp /usr/lib/ckan/default/src/ckan/ckan-uwsgi.ini /etc/ckan/default/
 sudo perl -pi.bak -e 's/^ckan\.site_url =/ckan.site_url = http:\/\/localhost:8080/g' /etc/ckan/default/ckan.ini
 sudo perl -pi.bak -e 's/^\#ckan\.storage_path/ckan.storage_path/' /etc/ckan/default/ckan.ini
+sudo perl -pi.bak -e 's/^ckan.plugins = stats text_view image_view recline_view/ckan.plugins = stats text_view image_view recline_view showcase hierarchy_display hierarchy_form/' /etc/ckan/default/ckan.ini
 sudo perl -pi.bak -e 's/^\#solr_url = http:\/\/127.0.0.1:8983\/solr/solr_url = http:\/\/127.0.0.1:8983\/solr\/ckan/' /etc/ckan/default/ckan.ini
 
 sudo chmod -R 0777 /usr/lib/ckan/default/src/ckan/ckan/public/base
