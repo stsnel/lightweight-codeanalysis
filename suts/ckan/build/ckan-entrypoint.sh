@@ -71,4 +71,10 @@ fi
 
 set_environment
 ckan --config "$CONFIG" db init
+
+# Create test users and data
+ckan -c "$CONFIG" seed basic
+ckan -c "$CONFIG" seed user
+ckan -c "$CONFIG" sysadmin add tester
+
 exec "$@"
