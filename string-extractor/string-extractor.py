@@ -272,6 +272,20 @@ class TestStringExtractor(unittest.TestCase):
         assert(output[1][0] == "FULL")
         assert(sorted(list(map( lambda x : x[1], output ))) == ["bar", "foo"])
 
+    def test_compound_statement(self):
+        output = self.extractor.getInterestingStrings('a == "foo" or a =="bar"')
+        assert(len(output) == 2)
+        assert(output[0][0] == "FULL")
+        assert(output[1][0] == "FULL")
+        assert(sorted(list(map( lambda x : x[1], output ))) == ["bar", "foo"])
+
+    def test_nested_compound_statement(self):
+        output = self.extractor.getInterestingStrings('a == "foo" or ( a == "bar" and b == "bat" )')
+        assert(len(output) == 3)
+        assert(output[0][0] == "FULL")
+        assert(output[1][0] == "FULL")
+        assert(output[2][0] == "FULL")
+        assert(sorted(list(map( lambda x : x[1], output ))) == ["bar", "bat", "foo"])
 
 if __name__ == '__main__':
     unittest.main()
