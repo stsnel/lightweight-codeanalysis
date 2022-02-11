@@ -225,6 +225,12 @@ class TestStringExtractor(unittest.TestCase):
         assert(output[0][0] == "FULL")
         assert(output[0][1] == "foo")
 
+    def test_comparison_equals_right_singlequotes(self):
+        output = self.extractor.getInterestingStrings("a == 'foo'")
+        assert(len(output) == 1)
+        assert(output[0][0] == "FULL")
+        assert(output[0][1] == "foo")
+
     def test_comparison_notequals_right(self):
         output = self.extractor.getInterestingStrings('a != "foot"')
         assert(len(output) == 1)
