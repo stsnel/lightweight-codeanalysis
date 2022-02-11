@@ -136,27 +136,26 @@ class InterestingStringCollector(ast.NodeVisitor):
                  [ ( "FULL", s ) for s in self.fullStrings ] )
 
 
-    def visit_Expr(self, node):
-        valuetype = str(type(node.value))
-        if valuetype == "<class '_ast.Compare'>":
-            opstype = str(type(node.value.ops[0]))
-            if opstype == "<class '_ast.Eq'>":
-                leftClass = str(type(node.value.left))
-                rightClass = str(type(node.value.comparators[0]))
-                if leftClass == "<class '_ast.Str'>" and rightClass != "<class '_ast.Str'>":
-                    self.fullStrings.add(node.value.left.s)
-                elif leftClass != "<class '_ast.Str'>" and rightClass == "<class '_ast.Str'>":
-                    self.fullStrings.add(node.value.comparators[0].s)
-            elif opstype == "<class '_ast.In'>":
-                leftClass = str(type(node.value.left))
-                if leftClass == "<class '_ast.Str'>":
-                    self.fragments.add(node.value.left.s)
-        elif valuetype == "<class '_ast.Call'>":
-            print(ast.dump(node))
-            if node.value.func.attr == "startswith" and str(type(node.value.args[0])) == "<class '_ast.Str'>":
-                self.prefixes.add(node.value.args[0].s)
-            elif node.value.func.attr == "endswith" and str(type(node.value.args[0])) == "<class '_ast.Str'>":
-                self.suffixes.add(node.value.args[0].s)
+    def visit_Compare(self, node):
+        opstype = str(type(node.ops[0]))
+        if opstype == "<class '_ast.Eq'>":
+            leftClass = str(type(node.left))
+            rightClass = str(type(node.comparators[0]))
+            if leftClass == "<class '_ast.Str'>" and rightClass != "<class '_ast.Str'>":
+                self.fullStrings.add(node.left.s)
+            elif leftClass != "<class '_ast.Str'>" and rightClass == "<class '_ast.Str'>":
+                self.fullStrings.add(node.comparators[0].s)
+        elif opstype == "<class '_ast.In'>":
+            leftClass = str(type(node.left))
+            if leftClass == "<class '_ast.Str'>":
+                self.fragments.add(node.left.s)
+
+
+    def visit_Call(self,node):
+        if node.func.attr == "startswith" and str(type(node.args[0])) == "<class '_ast.Str'>":
+            self.prefixes.add(node.args[0].s)
+        elif node.func.attr == "endswith" and str(type(node.args[0])) == "<class '_ast.Str'>":
+            self.suffixes.add(node.args[0].s)
     
 
 class TestStringExtractor(unittest.TestCase):
