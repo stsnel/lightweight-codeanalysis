@@ -241,7 +241,12 @@ class TestStringExtractor(unittest.TestCase):
         assert(output[0][0] == "SUFFIX")
         assert(output[0][1] == "foo")
 
-# TODO: test ternary
+    def test_ternary(self):
+        output = self.extractor.getInterestingStrings("a = 1 if foo == 'bar' else 2")
+        assert(len(output) == 1)
+        assert(output[0][0] == "FULL")
+        assert(output[0][1] == "bar")
+
 # Test if, elif
 # Test while
 
