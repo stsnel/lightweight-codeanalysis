@@ -138,7 +138,7 @@ class InterestingStringCollector(ast.NodeVisitor):
 
     def visit_Compare(self, node):
         opstype = str(type(node.ops[0]))
-        if opstype == "<class '_ast.Eq'>":
+        if opstype in ["<class '_ast.Eq'>","<class '_ast.NotEq'>"]:
             leftClass = str(type(node.left))
             rightClass = str(type(node.comparators[0]))
             if leftClass == "<class '_ast.Str'>" and rightClass != "<class '_ast.Str'>":
@@ -217,6 +217,12 @@ class TestStringExtractor(unittest.TestCase):
         assert(len(output) == 1)
         assert(output[0][0] == "FULL")
         assert(output[0][1] == "foo")
+
+    def test_comparison_notequals_right(self):
+        output = self.extractor.getInterestingStrings('a != "foot"')
+        assert(len(output) == 1)
+        assert(output[0][0] == "FULL")
+        assert(output[0][1] == "foot")
 
     def test_comparison_equals_left(self):
         output = self.extractor.getInterestingStrings('"foo" == a')
