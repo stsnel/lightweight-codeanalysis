@@ -30,5 +30,7 @@ elif foo == "baz":
 else
     print("Hello")
 
-
+# Line 34: while loop
+while foo == "bat":
+    print("Foo is bat")
 

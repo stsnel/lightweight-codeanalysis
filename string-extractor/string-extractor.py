@@ -207,6 +207,11 @@ class TestStringExtractor(unittest.TestCase):
         assert(output[0] == "OK")
         assert(output[1] == 'if foo == "baz":\n  pass')
 
+    def test_preprocess_while_statement(self):
+        output = self.extractor._preprocessLine( "stringprocessor-testdata.py", 34)
+        assert(output[0] == "OK")
+        assert(output[1] == 'while foo == "bat":\n  pass')
+
     def test_comparison_equals_right(self):
         output = self.extractor.getInterestingStrings('a == "foo"')
         assert(len(output) == 1)
