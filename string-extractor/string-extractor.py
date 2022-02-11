@@ -20,7 +20,8 @@ import unittest
 # a.startswith(string)
 # b.endswith(string)
 # c in string [fragment]
-# d == string
+# d in [string1,string2,string3] collection
+# e == string
 
 # String formats
 # - String literals
@@ -147,8 +148,14 @@ class InterestingStringCollector(ast.NodeVisitor):
                 self.fullStrings.add(node.comparators[0].s)
         elif opstype == "<class '_ast.In'>":
             leftClass = str(type(node.left))
+            comparatorsClass = str(type(node.comparators))
             if leftClass == "<class '_ast.Str'>":
                 self.fragments.add(node.left.s)
+            elif comparatorsClass == "<class 'list'>":
+                for element in node.comparators[0].elts:
+                    elementClass = str(type(element))
+                    if elementClass == "<class '_ast.Str'>":
+                        self.fullStrings.add(element.s)
 
 
     def visit_Call(self,node):
@@ -258,8 +265,13 @@ class TestStringExtractor(unittest.TestCase):
         assert(output[0][0] == "FULL")
         assert(output[0][1] == "bar")
 
-# Test if, elif
-# Test while
+    def test_in_collection(self):
+        output = self.extractor.getInterestingStrings('a in ["foo", "bar"]')
+        assert(len(output) == 2)
+        assert(output[0][0] == "FULL")
+        assert(output[1][0] == "FULL")
+        assert(sorted(list(map( lambda x : x[1], output ))) == ["bar", "foo"])
+
 
 if __name__ == '__main__':
     unittest.main()
