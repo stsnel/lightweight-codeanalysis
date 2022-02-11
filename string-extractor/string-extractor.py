@@ -219,6 +219,10 @@ class TestStringExtractor(unittest.TestCase):
         assert(output[0][0] == "FULL")
         assert(output[0][1] == "foo")
 
+    def test_comparison_equals_nonstring(self):
+        output = self.extractor.getInterestingStrings('a == 123')
+        assert(len(output) == 0)
+
     def test_comparison_in(self):
         output = self.extractor.getInterestingStrings('"foo" in a')
         assert(len(output) == 1)
