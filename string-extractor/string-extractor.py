@@ -29,12 +29,12 @@ class StringExtractor:
 
         if filename.endswith(".j2"):
             return ("IGNORE","")
-            
+
         # Ignore irrelevant control flow statements
         for keyword in ["try", "except", "finally", "else" ]:
             if re.match( "^{}\s*[\s:]$".format(keyword), line):
                 return ("IGNORE", "")
-        
+
         # Normalize elif statement to if statement.
         if re.match( "^elif\s", line):
             line = line[2:]
@@ -55,8 +55,8 @@ class StringExtractor:
             else:
                 thisLine = linecache.getline(filename, thisLineNumber).strip()
 
-            statement = " ".join([statement, thisLine ]).strip() 
-            
+            statement = " ".join([statement, thisLine ]).strip()
+
             if statement.endswith("\\"):
                 # Explicit line continuation. Keep iterating over lines,
                 # even if maximum statement length has been exceeded.
@@ -97,7 +97,7 @@ class StringExtractor:
         tree = ast.parse(statement)
         collector = InterestingStringCollector()
         collector.visit(tree)
-        return collector.getCollectedStrings() 
+        return collector.getCollectedStrings()
 
 
 class InterestingStringCollector(ast.NodeVisitor):
@@ -195,6 +195,11 @@ class TestStringExtractor(unittest.TestCase):
         output = self.extractor._preprocessLine( "stringprocessor-testdata.py", 28)
         assert(output[0] == "OK")
         assert(output[1] == 'if foo == "baz":\n  pass')
+
+    def test_preprocess_else_statement(self):
+        output = self.extractor._preprocessLine( "stringprocessor-testdata.py", 30)
+        assert(output[0] == "IGNORE")
+        assert(output[1] == "")
 
     def test_preprocess_while_statement(self):
         output = self.extractor._preprocessLine( "stringprocessor-testdata.py", 34)

@@ -27,7 +27,7 @@ if foo == "bar":
     print("Hello")
 elif foo == "baz":
     print("Bye")
-else
+else:
     print("Hello")
 
 # Line 34: while loop
