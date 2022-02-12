@@ -5,28 +5,6 @@ import linecache
 import re
 import unittest
 
-# Conditional constructions:
-# - if [condition] <-- just pass condition to ast.parse
-# - elif [condition] <-- just pass condition to ast.parse
-# - var = a if [condition] else [b]
-
-# Compound statements:
-# - a or b or c
-# - d or e or f
-# - ( compound statements )
-# - not g
-
-# Terminal conditions
-# a.startswith(string)
-# b.endswith(string)
-# c in string [fragment]
-# d in [string1,string2,string3] collection
-# e == string
-
-# String formats
-# - String literals
-# - Format strings
-
 class StringExtractor:
     def _preprocessLine(self, filename, lineNumber):
         """ Retrieves a line of code for parsing, checks whether it can be parsed
