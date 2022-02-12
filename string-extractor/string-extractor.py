@@ -141,7 +141,11 @@ class InterestingStringCollector(ast.NodeVisitor):
             self.prefixes.add(node.args[0].s)
         elif node.func.attr == "endswith" and str(type(node.args[0])) == "<class '_ast.Str'>":
             self.suffixes.add(node.args[0].s)
-    
+        elif node.func.attr == "index" and str(type(node.args[0])) == "<class '_ast.Str'>":
+            self.fragments.add(node.args[0].s)
+        elif node.func.attr == "find" and str(type(node.args[0])) == "<class '_ast.Str'>":
+            self.fragments.add(node.args[0].s)
+
 
 class TestStringExtractor(unittest.TestCase):
 
@@ -236,16 +240,28 @@ class TestStringExtractor(unittest.TestCase):
         assert(output[0][0] == "FRAGMENT")
         assert(output[0][1] == "foo")
 
-    def test_comparison_startswith(self):
+    def test_call_startswith(self):
         output = self.extractor.getInterestingStrings('a.startswith("foo")')
         assert(len(output) == 1)
         assert(output[0][0] == "PREFIX")
         assert(output[0][1] == "foo")
 
-    def test_comparison_endswith(self):
+    def test_call_endswith(self):
         output = self.extractor.getInterestingStrings('a.endswith("foo")')
         assert(len(output) == 1)
         assert(output[0][0] == "SUFFIX")
+        assert(output[0][1] == "foo")
+
+    def test_call_index(self):
+        output = self.extractor.getInterestingStrings('a.index("foo")')
+        assert(len(output) == 1)
+        assert(output[0][0] == "FRAGMENT")
+        assert(output[0][1] == "foo")
+
+    def test_call_find(self):
+        output = self.extractor.getInterestingStrings('a.find("foo")')
+        assert(len(output) == 1)
+        assert(output[0][0] == "FRAGMENT")
         assert(output[0][1] == "foo")
 
     def test_ternary(self):
