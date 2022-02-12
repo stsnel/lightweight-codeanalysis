@@ -37,3 +37,11 @@ while foo == "bat":
 # Line 38: for loop
 for a in b:
     print("Foo bar")
+
+# Line 42,44,46: try / except / finally
+try:
+    print("Foo")
+except Exception as e:
+    print("Bar")
+finally:
+    print("Baz")

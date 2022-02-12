@@ -34,6 +34,8 @@ class StringExtractor:
         for keyword in ["try", "except", "finally", "else" ]:
             if re.match( "^{}\s*[\s:]$".format(keyword), line):
                 return ("IGNORE", "")
+            elif re.match( "^{}\s".format(keyword), line):
+                return ("IGNORE", "")
 
         # Normalize elif statement to if statement.
         if re.match( "^elif\s", line):
@@ -198,6 +200,17 @@ class TestStringExtractor(unittest.TestCase):
 
     def test_preprocess_else_statement(self):
         output = self.extractor._preprocessLine( "stringprocessor-testdata.py", 30)
+        assert(output[0] == "IGNORE")
+        assert(output[1] == "")
+
+    def test_preprocess_try_except(self):
+        output = self.extractor._preprocessLine( "stringprocessor-testdata.py", 42)
+        assert(output[0] == "IGNORE")
+        assert(output[1] == "")
+        output = self.extractor._preprocessLine( "stringprocessor-testdata.py", 44)
+        assert(output[0] == "IGNORE")
+        assert(output[1] == "")
+        output = self.extractor._preprocessLine( "stringprocessor-testdata.py", 46)
         assert(output[0] == "IGNORE")
         assert(output[1] == "")
 
