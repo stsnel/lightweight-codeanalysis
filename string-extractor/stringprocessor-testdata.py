@@ -34,3 +34,6 @@ else
 while foo == "bat":
     print("Foo is bat")
 
+# Line 38: for loop
+for a in b:
+    print("Foo bar")
