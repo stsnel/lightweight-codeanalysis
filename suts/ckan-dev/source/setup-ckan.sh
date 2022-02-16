@@ -56,7 +56,6 @@ sudo chown -R `whoami` /etc/ckan/
 ckan generate config /etc/ckan/default/ckan.ini
 ln -s /usr/lib/ckan/default/src/ckan/who.ini /etc/ckan/default/who.ini
 sudo cp /usr/lib/ckan/default/src/ckan/wsgi.py /etc/ckan/default/
-sudo cp /usr/lib/ckan/default/src/ckan/ckan-uwsgi.ini /etc/ckan/default/
 sudo perl -pi.bak -e 's/^ckan\.site_url =/ckan.site_url = http:\/\/localhost:8080/g' /etc/ckan/default/ckan.ini
 sudo perl -pi.bak -e 's/^\#ckan\.storage_path/ckan.storage_path/' /etc/ckan/default/ckan.ini
 sudo perl -pi.bak -e 's/^ckan.plugins = stats text_view image_view recline_view/ckan.plugins = stats text_view image_view recline_view showcase hierarchy_display hierarchy_form/' /etc/ckan/default/ckan.ini
@@ -65,6 +64,27 @@ sudo perl -pi.bak -e 's/^\#solr_url = http:\/\/127.0.0.1:8983\/solr/solr_url = h
 sudo chmod -R 0777 /usr/lib/ckan/default/src/ckan/ckan/public/base
 
 ckan --config /etc/ckan/default/ckan.ini db init
+
+cat > /tmp/ckan-uwsgi.ini << UWSGIini
+[uwsgi]
+
+http            =  127.0.0.1:8080
+uid             =  www-data
+gid             =  www-data
+wsgi-file       =  /etc/ckan/default/wsgi.py
+virtualenv      =  /usr/lib/ckan/default
+module          =  wsgi:application
+master          =  true
+pidfile         =  /tmp/%n.pid
+harakiri        =  300
+max-requests    =  5000
+vacuum          =  true
+callable        =  application
+buffer-size     =  32768
+strict          =  true
+UWSGIini
+
+install -m 0644 /tmp/ckan-uwsgi.ini /etc/ckan/default/ckan-uwsgi.ini
 
 cat > /tmp/ckan-uwsgi.conf << UWSGIconf
 [program:ckan-uwsgi]
@@ -96,7 +116,9 @@ stopwaitsecs = 600
 ; Required for uWSGI as it does not obey SIGTERM.
 stopsignal=QUIT
 UWSGIconf
+
 install -m 0644 /tmp/ckan-uwsgi.conf /etc/supervisor/conf.d/ckan-uwsgi.conf
+
 sudo cp /usr/lib/ckan/default/src/ckan/ckan/config/supervisor-ckan-worker.conf /etc/supervisor/conf.d
 sudo mkdir /var/log/ckan
 sudo chmod 0777 /var/log/ckan
@@ -118,6 +140,11 @@ server {
         proxy_cache_key \$host\$scheme\$proxy_host\$request_uri;
         # In emergency comment out line to force caching
         # proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+
+        proxy_connect_timeout       300;
+        proxy_send_timeout          300;
+        proxy_read_timeout          300;
+        send_timeout                300;
     }
 
 }
