@@ -23,6 +23,7 @@ pip3 install setuptools==44.1.0
 pip3 install --upgrade pip
 pip3 install -e 'git+https://github.com/stsnel/ckan.git@2.9.3-testar#egg=ckan[requirements]'
 pip3 install -e 'git+https://github.com/stsnel/coveragepy.git@6.2-local#egg=coverage[requirements]'
+pip3 install -e 'git+https://github.com/stsnel/python-string-extractor.git@main#egg=string_extractor[requirements]'
 pip3 install uwsgi
 
 cd /usr/lib/ckan/default/src
