@@ -76,6 +76,7 @@ RUN ckan-pip3 install -U pip && \
     ckan-pip3 install -e "git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy" && \
     ckan-pip3 install -r /usr/lib/ckan/venv/src/ckanext-hierarchy/requirements.txt && \
     ckan-pip3 install git+https://github.com/stsnel/coveragepy.git@6.2-local && \
+    ckan-pip3 install git+https://github.com/stsnel/python-string-extractor.git@main && \
     ln -s $CKAN_VENV/src/ckan/ckan/config/who.ini $CKAN_CONFIG/who.ini && \
     cp -v $CKAN_VENV/src/ckan/contrib/docker/ckan-entrypoint.sh /ckan-entrypoint.sh && \
     chmod +x /ckan-entrypoint.sh && \
