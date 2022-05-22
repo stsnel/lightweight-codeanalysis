@@ -70,6 +70,9 @@ sqlite> SELECT
           file.path LIKE '/usr/lib/ckan/default/%'
         LIMIT 5
         ;
+```
+
+```
 239377|/usr/lib/ckan/default/src/ckan/ckan/config/middleware/flask_app.py|aboutaction|428
 239378|/usr/lib/ckan/default/src/ckan/ckan/config/middleware/flask_app.py|aboutaction|397
 239412|/usr/lib/ckan/default/src/ckan/ckan/config/middleware/flask_app.py|aboutaction|400
@@ -95,6 +98,9 @@ sqlite> SELECT
           file.path = '/usr/lib/ckan/default/src/ckan/ckan/authz.py' AND
           log_context.context like "%action"
         GROUP BY log_context.context;
+```
+
+```
 aboutaction|68
 loginaction|282
 ```
@@ -116,6 +122,9 @@ sqlite> SELECT
           file.path = '/usr/lib/ckan/default/src/ckan/ckan/model/user.py' AND
           log_line.line_number = 64
         GROUP BY log_context.context;
+```
+
+```
 8|loginaction
 ```
 
@@ -136,5 +145,8 @@ sqlite> SELECT
         WHERE 
           file.path = '/usr/lib/ckan/default/src/ckan/ckan/model/user.py'
         GROUP BY log_context.context;
+```
+
+```
 2|loginaction
 ```
