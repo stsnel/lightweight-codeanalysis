@@ -1,0 +1,41 @@
+- name: Install TigerVNC packages
+  become: yes
+  become_user: root
+  ansible.builtin.package:
+    name:
+      - tigervnc-standalone-server
+      - tigervnc-common
+    state: present
+
+
+- name: Configure TigerVNC credentials
+  ansible.builtin.shell:
+    cmd: printf "{{ tigervnc_password }}\n{{ tigervnc_password }}\n" | vncpasswd
+    creates: /home/ubuntu/.vnc/passwd
+    executable: /bin/bash
+
+
+- name: Configure TigerVNC startup file
+  ansible.builtin.copy:
+    src: xstartup
+    dest: /home/ubuntu/.vnc/xstartup
+    mode: 0755
+    owner: ubuntu
+    group: ubuntu
+
+
+- name: Configure TigerVNC service
+  ansible.builtin.copy:
+    src: vncserver.service
+    dest: /etc/systemd/system/vncserver.service
+    mode: 0755
+    owner: root
+    group: root
+
+
+    #- name: Start TigerVNC service
+    #  ansible.builtin.service:
+    #  name: tigervnc
+    # state: started
+    # enabled: true
+    # daemon-reload: true

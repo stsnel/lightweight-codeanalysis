@@ -1,0 +1,14 @@
+- name: Install Gnome Desktop and related packages
+  ansible.builtin.package:
+    name:
+      - gnome-session
+      - gdm3
+      - ubuntu-desktop
+    state: present
+
+
+- name: Configure systemd to boot to graphical target
+  file:
+    src: /usr/lib/systemd/system/graphical.target
+    dest: /etc/systemd/system/default.target
+    state: link

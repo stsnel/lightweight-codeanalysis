@@ -1,0 +1,12 @@
+---
+roles:
+  - name: robertdebock.bootstrap
+    version: 6.0.4
+  - name: robertdebock.core_dependencies
+    version: 2.1.10
+  - name: robertdebock.gnome
+    version: 2.2.4
+  - name: robertdebock.users
+    version: 5.4.3
+  - name: robertdebock.tigervnc
+    version: 3.0.6

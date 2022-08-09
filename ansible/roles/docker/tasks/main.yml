@@ -1,0 +1,8 @@
+- name: Install Docker and Docker Compose
+  become: yes
+  become_user: root
+  ansible.builtin.package:
+    name:
+      - docker.io
+      - docker-compose
+    state: present
