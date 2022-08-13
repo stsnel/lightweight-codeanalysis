@@ -2,6 +2,7 @@
   become: yes
   roles:
     - common
+    - awscli
     - docker
     - gnome
     - tigervnc

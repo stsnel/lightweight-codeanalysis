@@ -1,0 +1,34 @@
+- name: Install AWS CLI
+  become: yes
+  become_user: root
+  ansible.builtin.package:
+    name: awscli
+    state: present
+
+
+- name: Create aws config dir
+  ansible.builtin.file:
+    name: /home/ubuntu/.aws
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+
+
+- name: Configure AWS credentials
+  ansible.builtin.template:
+    src: aws-credentials.j2
+    dest: /home/ubuntu/.aws/credentials
+    mode: 0600
+    owner: ubuntu
+    group: ubuntu
+  no_log: true
+
+
+- name: Configure AWS CLI
+  ansible.builtin.template:
+    src: aws-config.j2
+    dest: /home/ubuntu/.aws/config
+    mode: 0600
+    owner: ubuntu
+    group: ubuntu
