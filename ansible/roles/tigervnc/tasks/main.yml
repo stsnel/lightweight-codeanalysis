@@ -15,6 +15,15 @@
     executable: /bin/bash
 
 
+- name: Create VNC config directory
+  ansible.builtin.file:
+    path: /home/ubuntu/.vnc
+    state: directory
+    owner: ubuntu
+    group: root
+    mode: 0775
+
+
 - name: Configure TigerVNC startup file
   ansible.builtin.copy:
     src: xstartup
