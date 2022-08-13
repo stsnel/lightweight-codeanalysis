@@ -1,13 +1,3 @@
-- name: Install TESTAR dependencies
-  become: yes
-  become_user: root
-  ansible.builtin.package:
-    name:
-      - openjdk-11-jdk
-      - openjdk-11-jre
-      - gradle
-    state: present
-
 - name: Make project directory
   ansible.builtin.file:
     state: directory
@@ -18,8 +8,7 @@
     mode: 0755
 
 - name: Install TESTAR repository
-  become: yes
-  become_user: ubuntu
+  become: false
   ansible.builtin.git:
     repo: https://github.com/stsnel/TESTAR_dev.git
     dest: /data/studie/af/TESTAR_dev

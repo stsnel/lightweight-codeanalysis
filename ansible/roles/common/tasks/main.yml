@@ -4,7 +4,7 @@
     cache_valid_time: 3600
 
 
-# Disable unattended upgrades so they don't interfere with experiments
+# Disable unattended upgrades so they don't interfere with experiments and playbook
 - name: Disable unattended upgrades
   ansible.builtin.copy:
     src: 20auto-upgrades
@@ -12,3 +12,14 @@
     owner: root
     group: root
     mode: 0644
+
+
+- name: Install Java dependencies for TESTAR and OrientDB
+  become: yes
+  become_user: root
+  ansible.builtin.package:
+    name:
+      - openjdk-11-jdk
+      - openjdk-11-jre
+      - gradle
+    state: present
