@@ -15,6 +15,10 @@
     append: yes
 
 
+- name: Reset ssh connection to allow user changes to affect current user
+  ansible.builtin.meta: reset_connection
+
+
 - name: Authenticate Docker against AWS ECR
   become: false
   ansible.builtin.shell:
