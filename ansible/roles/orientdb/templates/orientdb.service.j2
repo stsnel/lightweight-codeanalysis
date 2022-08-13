@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+#
+# Copyright (c) OrientDB LTD (http://http://orientdb.com/)
+#
+[Unit]
+Description=OrientDB Server
+After=network.target
+After=syslog.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+ExecStart=/opt/orientdb-{{ orientdb_version }}/bin/server.sh

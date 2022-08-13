@@ -1,0 +1,40 @@
+- name: Unpack OrientDB
+  ansible.builtin.unarchive:
+    src: "{{ orientdb_download_url }}"
+    dest: /opt
+    remote_src: yes
+    creates: "/opt/orientdb-{{ orientdb_version }}"
+
+
+- name: Fix up permissions OrientDB
+  ansible.builtin.file:
+    name: "/opt/orientdb-{{ orientdb_version}}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    recurse: true
+
+
+- name: Load OrientDB configuration with root password
+  ansible.builtin.template:
+    src: orientdb-server-config.xml.j2
+    dest: "/opt/orientdb-{{ orientdb_version }}/config/orientdb-server-config.xml"
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+
+- name: Setup systemd unit file OrientDB
+  ansible.builtin.template:
+    src: orientdb.service.j2
+    dest: /etc/systemd/system/orientdb.service
+    owner: root
+    group: root
+    mode: 0644
+
+
+- name: Start OrientDB service
+  ansible.builtin.systemd:
+    name: orientdb
+    state: started
+    daemon_reload: yes
