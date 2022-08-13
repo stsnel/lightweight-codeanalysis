@@ -33,18 +33,11 @@
     group: ubuntu
 
 
-- name: Configure TigerVNC service
+- name: Upload script for starting VNC server
   ansible.builtin.copy:
-    src: vncserver.service
-    dest: /etc/systemd/system/vncserver.service
+    src: start-vncserver.sh
+    dest: /home/ubuntu/start-vncserver.sh
     mode: 0755
-    owner: root
-    group: root
-
-
-    #- name: Start TigerVNC service
-    #  ansible.builtin.service:
-    #  name: tigervnc
-    # state: started
-    # enabled: true
-    # daemon-reload: true
+    owner: ubuntu
+    group: ubuntu
+    
