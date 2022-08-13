@@ -14,3 +14,5 @@
     dest: /data/studie/af/TESTAR_dev
     version: sietse-project-rebase-apr2022
     update: true
+  # Ignore errors because of possible local modifications by TESTAR itself
+  ignore_errors: true
