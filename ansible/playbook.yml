@@ -5,6 +5,7 @@
     - awscli
     - docker
     - gnome
+    - chrome
     - orientdb
     - tigervnc
     - testar
