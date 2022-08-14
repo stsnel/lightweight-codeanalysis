@@ -15,9 +15,9 @@
 
 
 - name: Disable Software Updater popups
-  ansible.builtin.command:
-    cmd: "gsettings set com.ubuntu.update-notifier no-show-notifications true"
-
+  ansible.builtin.file:
+    path: /etc/apt/apt.conf.d/99update-notifier
+    state: absent
 
 - name: Disable screen lock
   ansible.builtin.command:
@@ -27,4 +27,22 @@
 - name: Disable screen energy saver
   ansible.builtin.command:
     cmd: "gsettings set org.gnome.desktop.session idle-delay 0"
+
+
+- name: Disable release update prompts
+  ansible.builtin.copy:
+    src: release-upgrades
+    dest: /etc/update-manager/release-upgrades
+
+
+- name: Ensure Gnome .config directory exists
+  ansible.builtin.file:
+    path: /home/ubuntu/.config
+    state: directory
+
+
+- name: Suppress welcome messages in Gnome
+  ansible.builtin.copy:
+    src: gnome-initial-setup-done
+    dest: /home/ubuntu/.config/gnome-initial-setup-done
 
