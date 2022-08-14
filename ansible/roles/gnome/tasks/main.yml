@@ -8,7 +8,23 @@
 
 
 - name: Configure systemd to boot to graphical target
-  file:
+  ansible.builtin.file:
     src: /usr/lib/systemd/system/graphical.target
     dest: /etc/systemd/system/default.target
     state: link
+
+
+- name: Disable Software Updater popups
+  ansible.builtin.command:
+    cmd: "gsettings set com.ubuntu.update-notifier no-show-notifications true"
+
+
+- name: Disable screen lock
+  ansible.builtin.command:
+    cmd: "gsettings set org.gnome.desktop.screensaver lock-enabled false"
+
+
+- name: Disable screen energy saver
+  ansible.builtin.command:
+    cmd: "gsettings set org.gnome.desktop.session idle-delay 0"
+
