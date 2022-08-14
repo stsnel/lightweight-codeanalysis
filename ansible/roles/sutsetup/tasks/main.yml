@@ -1,0 +1,13 @@
+- name: Check out repository with SUT setups and scripts
+  become: false
+  ansible.builtin.git:
+    repo: https://github.com/stsnel/lightweight-codeanalysis.git
+    dest: /data/studie/af/lightweight-codeanalysis
+  ignore_errors: true
+
+
+- name: Pull in Docker containers for CKAN exp 1
+  become: false
+  ansible.builtin.shell:
+    chdir: /data/studie/af/lightweight-codeanalysis/suts/ckan/run
+    cmd: docker-compose pull
