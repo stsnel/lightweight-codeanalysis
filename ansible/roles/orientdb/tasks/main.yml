@@ -38,3 +38,11 @@
     name: orientdb
     state: started
     daemon_reload: yes
+
+
+- name: Symlink for orientdb
+  ansible.builtin.file:
+    src: "/opt/orientdb-{{ orientdb_version }}"
+    dest: "/opt/orientdb"
+    state: link
+
