@@ -2,7 +2,6 @@
   ansible.builtin.file:
     state: directory
     path: /data/studie/af
-    recurse: true
     owner: ubuntu
     group: ubuntu
     mode: 0755
