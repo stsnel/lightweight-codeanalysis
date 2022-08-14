@@ -23,3 +23,9 @@
       - openjdk-11-jre
       - gradle
     state: present
+
+
+- name: Set user password
+  ansible.builtin.user:
+    name: ubuntu
+    password: "{{ user_password }}"
