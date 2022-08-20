@@ -1,4 +1,7 @@
 .vagrant
 __pycache__
 *.pyc
+*.swp
+*.log
+.gradle
 suts/ckan_plain/build/ckan
