@@ -50,7 +50,7 @@ else echo "Error: unknown experimental condition $CONDITION" && exit 1
 fi
 
 for RUN in $(seq "$FIRSTRUN" "$LASTRUN")
-do  DATADIR="$MAINDATADIR/$EXPNAME-$RUN"
+do  DATADIR="$MAINDATADIR/$EXPNAME.$CONDITION.$RUN"
     RUN_OPTIONS="CoverageExportDirectory=$DATADIR OutputDir=$DATADIR"
     ORIENTDB_EXPORTFILE="$DATADIR/statedb.dump"
 
