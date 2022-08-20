@@ -37,12 +37,15 @@ fi
 GLOBAL_OPTIONS="sse=$PROTOCOL ShowVisualSettingsDialogOnStartup=false Mode=Generate Sequences=$NUMSEQUENCES SequenceLength=$SEQUENCELENGTH"
 
 # Look up options for experimental condition
+
 if [ "$CONDITION" == "experimental" ]
 then EXP_OPTIONS="Expcondition=experimental SetLogContext=true ProcessDataAfterAction=true CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run"
-elif [ "$CONDITION" == "control-defaultactionselection" ]
+elif [ "$CONDITION" == "plain" ]
 then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan_plain/run"
+elif [ "$CONDITION" == "control-defaultactionselection" ]
+then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run"
 elif [ "$CONDITION" == "control-customactionselection" ]
-then EXP_OPTIONS="ExpCondition=control-customactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan_plain/run"
+then EXP_OPTIONS="ExpCondition=control-customactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan"
 else echo "Error: unknown experimental condition $CONDITION" && exit 1
 fi
 
