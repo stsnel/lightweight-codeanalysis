@@ -69,7 +69,7 @@ SETTINGSFILE
 
     ## Run experiment
     cd  /data/studie/af/TESTAR_dev/testar/target/install/testar/bin || exit 1
-    ./testar $GLOBAL_OPTIONS $EXP_OPTIONS $RUN_OPTIONS
+    ./testar $GLOBAL_OPTIONS $EXP_OPTIONS $RUN_OPTIONS >& "$DATADIR/experiment.log"
 
     ## Export state database
     /opt/orientdb/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD; EXPORT DATABASE $ORIENTDB_EXPORTFILE;"
