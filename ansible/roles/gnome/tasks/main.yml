@@ -39,10 +39,16 @@
   ansible.builtin.file:
     path: /home/ubuntu/.config
     state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
 
 
 - name: Suppress welcome messages in Gnome
   ansible.builtin.copy:
     src: gnome-initial-setup-done
     dest: /home/ubuntu/.config/gnome-initial-setup-done
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
 
