@@ -17,6 +17,7 @@
   ignore_errors: true
 
 - name: Build TESTAR
+  become: false
   ansible.builtin.command:
     cmd: "./gradlew installDist"
     chdir: "/data/studie/af/TESTAR_dev"
