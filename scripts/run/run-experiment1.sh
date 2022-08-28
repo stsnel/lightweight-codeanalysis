@@ -46,7 +46,7 @@ then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=fals
 elif [ "$CONDITION" == "control-defaultactionselection" ]
 then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false SetCoverageContext=true ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
 elif [ "$CONDITION" == "control-customactionselection" ]
-then EXP_OPTIONS="ExpCondition=control-customactionselection SetLogContext=false  SetCoverageContext=true ProcessDataAfterAction=false CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
+then EXP_OPTIONS="ExpCondition=control-customactionselection SetLogContext=false  SetCoverageContext=true ProcessDataAfterAction=false CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
 else echo "Error: unknown experimental condition $CONDITION" && exit 1
 fi
 
