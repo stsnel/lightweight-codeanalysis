@@ -20,11 +20,13 @@
     state: absent
 
 - name: Disable screen lock
+  become: false
   ansible.builtin.command:
     cmd: "gsettings set org.gnome.desktop.screensaver lock-enabled false"
 
 
 - name: Disable screen energy saver
+  become: false
   ansible.builtin.command:
     cmd: "gsettings set org.gnome.desktop.session idle-delay 0"
 
@@ -51,4 +53,3 @@
     owner: ubuntu
     group: ubuntu
     mode: 0644
-
