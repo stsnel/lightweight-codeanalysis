@@ -6,8 +6,11 @@
   ignore_errors: true
 
 
-- name: Pull in Docker containers for CKAN exp 1
+- name: Pull Docker container images
   become: false
   ansible.builtin.shell:
-    chdir: /data/studie/af/lightweight-codeanalysis/suts/ckan/run
+    chdir: '{{ item }}'
     cmd: docker-compose pull
+  with_items:
+    - /data/studie/af/lightweight-codeanalysis/suts/ckan/run
+    - /data/studie/af/lightweight-codeanalysis/suts/ckan_plain/run
