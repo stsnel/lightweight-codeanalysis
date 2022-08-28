@@ -68,17 +68,26 @@ do  DATADIR="$MAINDATADIR/$EXPNAME.$CONDITION.$RUN"
 SETTINGSFILE
 
     ## Create state database
+    if [ "$CONDITION" != "plain" ]
+    then
     $ORIENTDB_DIR/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_CONNECTDB $ORIENTDB_USER $ORIENTDB_PASSWORD; CREATE DATABASE remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD;"
+    fi
 
     ## Run experiment
     cd  /data/studie/af/TESTAR_dev/testar/target/install/testar/bin || exit 1
     ./testar $GLOBAL_OPTIONS $EXP_OPTIONS $RUN_OPTIONS >& "$DATADIR/experiment.log"
 
     ## Export state database
+    if [ "$CONDITION" != "plain" ]
+    then
     $ORIENTDB_DIR/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD; EXPORT DATABASE $ORIENTDB_EXPORTFILE;"
+    fi
 
     ## Drop state database
+    if [ "$CONDITION" != "plain" ]
+    then
     $ORIENTDB_DIR/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_CONNECTDB $ORIENTDB_USER $ORIENTDB_PASSWORD; DROP DATABASE remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD"
+    fi
 done
 
 echo "Run script done."
