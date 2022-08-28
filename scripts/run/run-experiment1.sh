@@ -40,13 +40,13 @@ GLOBAL_OPTIONS="sse=$PROTOCOL ShowVisualSettingsDialogOnStartup=false Mode=Gener
 # Look up options for experimental condition
 
 if [ "$CONDITION" == "experimental" ]
-then EXP_OPTIONS="Expcondition=experimental SetLogContext=true ProcessDataAfterAction=true CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true"
+then EXP_OPTIONS="Expcondition=experimental SetLogContext=true ProcessDataAfterAction=true CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true StateModelEnabled=true"
 elif [ "$CONDITION" == "plain" ]
-then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan_plain/run CarryOverCoverage=false"
+then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan_plain/run CarryOverCoverage=false StateModelEnabled=false"
 elif [ "$CONDITION" == "control-defaultactionselection" ]
-then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true"
+then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true StateModelEnabled=true"
 elif [ "$CONDITION" == "control-customactionselection" ]
-then EXP_OPTIONS="ExpCondition=control-customactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan CarryOverCoverage=true"
+then EXP_OPTIONS="ExpCondition=control-customactionselection SetLogContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan CarryOverCoverage=true StateModelEnabled=true"
 else echo "Error: unknown experimental condition $CONDITION" && exit 1
 fi
 
