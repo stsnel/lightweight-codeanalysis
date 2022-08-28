@@ -20,6 +20,7 @@ FIRSTRUN=1
 # 8. Number last run >= first run
 LASTRUN=2
 # 9. OrientDB settings
+ORIENTDB_DIR="/opt/orientdb"
 ORIENTDB_USER="root"
 ORIENTDB_PASSWORD="testar"
 ORIENTDB_CONNECTDB="demodb"
@@ -65,17 +66,17 @@ do  DATADIR="$MAINDATADIR/$EXPNAME.$CONDITION.$RUN"
 SETTINGSFILE
 
     ## Create state database
-    /opt/orientdb/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_CONNECTDB $ORIENTDB_USER $ORIENTDB_PASSWORD; CREATE DATABASE remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD;"
+    $ORIENTDB_DIR/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_CONNECTDB $ORIENTDB_USER $ORIENTDB_PASSWORD; CREATE DATABASE remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD;"
 
     ## Run experiment
     cd  /data/studie/af/TESTAR_dev/testar/target/install/testar/bin || exit 1
     ./testar $GLOBAL_OPTIONS $EXP_OPTIONS $RUN_OPTIONS >& "$DATADIR/experiment.log"
 
     ## Export state database
-    /opt/orientdb/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD; EXPORT DATABASE $ORIENTDB_EXPORTFILE;"
+    $ORIENTDB_DIR/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD; EXPORT DATABASE $ORIENTDB_EXPORTFILE;"
 
     ## Drop state database
-    /opt/orientdb/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_CONNECTDB $ORIENTDB_USER $ORIENTDB_PASSWORD; DROP DATABASE remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD"
+    $ORIENTDB_DIR/bin/console.sh "CONNECT remote:localhost/$ORIENTDB_CONNECTDB $ORIENTDB_USER $ORIENTDB_PASSWORD; DROP DATABASE remote:localhost/$ORIENTDB_TESTARDB $ORIENTDB_USER $ORIENTDB_PASSWORD"
 done
 
 echo "Run script done."
