@@ -37,7 +37,8 @@
   ansible.builtin.systemd:
     name: orientdb
     state: started
-    daemon_reload: yes
+    daemon_reload: true
+    enabled: true
 
 
 - name: Symlink for orientdb
