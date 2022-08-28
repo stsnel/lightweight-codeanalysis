@@ -60,9 +60,11 @@ do  DATADIR="$MAINDATADIR/$EXPNAME.$CONDITION.$RUN"
 
     # Write settings file
     cat > "$DATADIR/exp1.settings" << SETTINGSFILE
-    Experiment: $EXPNAME [$RUN]
+    Experiment    : $EXPNAME
+    Condition     : $CONDITION
+    Run           : $RUN
     Global options: $GLOBAL_OPTIONS
-    Run options: $RUN_OPTIONS
+    Run options   : $RUN_OPTIONS
 SETTINGSFILE
 
     ## Create state database
