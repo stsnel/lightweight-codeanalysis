@@ -15,3 +15,8 @@
     update: true
   # Ignore errors because of possible local modifications by TESTAR itself
   ignore_errors: true
+
+- name: Build TESTAR
+  ansible.builtin.command:
+    cmd: "./gradlew installDist"
+    chdir: "/data/studie/af/TESTAR_dev"
