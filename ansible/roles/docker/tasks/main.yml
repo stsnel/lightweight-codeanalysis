@@ -5,6 +5,9 @@
     name:
       - docker.io
       - docker-compose
+      - gnome-keyring
+      - gnupg2
+      - pass
     state: present
 
 
