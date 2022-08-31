@@ -9,8 +9,8 @@
 
 - name: Configure systemd to boot to graphical target
   ansible.builtin.file:
-    src: /usr/lib/systemd/system/graphical.target
-    dest: /etc/systemd/system/default.target
+    src: /lib/systemd/system/graphical.target
+    dest: /lib/systemd/system/default.target
     state: link
 
 
