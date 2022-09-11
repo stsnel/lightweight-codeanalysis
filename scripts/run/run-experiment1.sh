@@ -52,7 +52,8 @@ fi
 
 for RUN in $(seq "$FIRSTRUN" "$LASTRUN")
 do  DATADIR="$MAINDATADIR/$EXPNAME.$CONDITION.$RUN"
-    RUN_OPTIONS="CoverageExportDirectory=$DATADIR OutputDir=$DATADIR"
+    LOGCONTEXTPREFIX="$EXPNAME.$CONDITION.$RUN"
+    RUN_OPTIONS="CoverageExportDirectory=$DATADIR OutputDir=$DATADIR LogContextPrefix=$LOGCONTEXTPREFIX"
     ORIENTDB_EXPORTFILE="$DATADIR/statedb.dump"
 
     # Create data directory
