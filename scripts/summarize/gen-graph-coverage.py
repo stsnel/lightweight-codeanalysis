@@ -35,6 +35,8 @@ conditions = ["experimental", "control-customactionselection", "control-defaulta
 color_map = { "plain": "red", "experimental": "green", "control-customactionselection": "yellow", "control-defaultactionselection": "blue" }
 
 fig, ax = plt.subplots()
+ax.set_xlabel('Sequence number')
+ax.set_ylabel('Line coverage')
 
 for condition in conditions:
     (x,y) = get_data(args,condition)
