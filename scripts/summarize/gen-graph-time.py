@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
+"""This script generates a boxplot of sequence or run times across
+   experimental conditions."""
+
 import argparse
 import csv
 import sys
 
 import numpy as np
 from matplotlib import pyplot as plt
-
-# This scripts compiles a table in CSV or LaTeX format of runtime / sequence time of the experiments
 
 def get_args():
     parser = argparse.ArgumentParser(description=__doc__)

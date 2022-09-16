@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+"""This script generates a scatterplot diagram of line coverage across sequences
+   and experimental conditions."""
+
 import argparse
 import csv
 import sys
@@ -8,7 +11,6 @@ import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.ticker as tick
 
-# This scripts compiles a table in CSV or LaTeX format of runtime / sequence time of the experiments
 
 def get_args():
     parser = argparse.ArgumentParser(description=__doc__)
