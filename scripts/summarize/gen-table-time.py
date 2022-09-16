@@ -62,6 +62,6 @@ elif args.outformat == "latex":
    print("\end{tabular}")
    print("\end{center}")
 else:
-    print("Error: unknown output format " + args.outoformat)
+    print("Error: unknown output format " + args.outformat)
     sys.exit(1)
 
