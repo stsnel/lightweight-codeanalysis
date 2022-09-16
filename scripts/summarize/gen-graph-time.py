@@ -23,11 +23,12 @@ def get_data_by_condition(args, condition):
         reader = csv.DictReader(csvfile, delimiter =';')
         for row in reader:
             if row["Condition"] == condition:
-                data.append(int(row[args.timecolumn]))
+                data.append(int(row[args.timecolumn])/1000)
     return data
 
 args = get_args()
 conditions = ["plain", "experimental", "control-customactionselection", "control-defaultactionselection"]
+condition_labels = ["plain", "experimental", "control\n(custom AS)", "control\n(default AS)"]
 tot_data = []
 
 for condition in conditions:
@@ -35,13 +36,13 @@ for condition in conditions:
     n = len(data)
     tot_data.append(np.array(data))
 
-fig = plt.figure(figsize =(10, 7))
+fig, ax = plt.subplots()
  
-ax = fig.add_axes([0, 0, 1, 1])
-
-# x-axis labels
-#ax.set_xticklabels(conditions)
+ax.set_xticklabels(conditions)
+ax.set_xlabel('Condition')
+ax.set_ylabel('Time in seconds')
  
-bp = ax.boxplot(tot_data, labels=conditions)
+bp = ax.boxplot(tot_data, labels=condition_labels)
  
+plt.tight_layout()
 plt.savefig(args.outfile)
