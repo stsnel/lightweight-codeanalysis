@@ -40,5 +40,5 @@ for condition in conditions:
     (x,y) = get_data(args,condition)
     ax.scatter(x, y, c=color_map[condition], label=condition)
 
-plt.legend(loc='upper right')
+plt.legend(loc='lower right')
 plt.savefig(args.outfile)
