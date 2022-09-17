@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Prints CSV output with time of each experiment run in milliseconds"""
+"""Prints CSV file with total and application coverage per experiment/condition/run/sequence"""
 
 import csv
 from glob import glob
