@@ -29,14 +29,3 @@
   ansible.builtin.user:
     name: ubuntu
     password: "{{ user_password }}"
-
-
-# Workaround for NetworkManager issue - see https://stackoverflow.com/questions/53219008/ec2-ami-built-from-ubuntu-18-04-with-ubuntu-desktop-installed-is-unreachable
-- name: Remove networking config
-  become: yes
-  become_user: root
-  ansible.builtin.copy:
-    content: ""
-    dest: "/etc/NetworkManager/conf.d/10-globally-managed-devices.conf"
-    force: true
--
