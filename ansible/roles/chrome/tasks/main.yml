@@ -5,7 +5,7 @@
 
 - name: Install Chrome driver
   ansible.builtin.unarchive:
-    src: https://chromedriver.storage.googleapis.com/104.0.5112.79/chromedriver_linux64.zip
+    src: https://chromedriver.storage.googleapis.com/106.0.5249.61/chromedriver_linux64.zip
     dest: /usr/local/bin
     remote_src: yes
 
