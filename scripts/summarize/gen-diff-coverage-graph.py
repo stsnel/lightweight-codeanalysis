@@ -60,7 +60,7 @@ def get_cov_data_by_condition_and_seq(args, condition, sequence = None):
 
 def get_comparison_data(args, data):
     result = dict()
-    sequences = get_sequences()
+    sequences = get_sequences(args)
     for condition_a in get_conditions():
         result[condition_a] = dict()
         for condition_b in get_conditions():
@@ -76,18 +76,25 @@ def get_comparison_data(args, data):
                 result[condition_a][condition_b][str(seq)] = only_base_count
     return result
 
-def get_plot_data(comparison_data, condition_a, condition_b):
-    x = get_sequences()
+def get_plot_data(args, comparison_data, condition_a, condition_b):
+    x = get_sequences(args)
     y = []
-    for seq in get_sequences():
+    for seq in x:
         y.append(comparison_data[condition_a][condition_b][str(seq)])
     return (x,y)
 
 def get_conditions():
     return ["experimental", "control-defaultactionselection", "control-customactionselection"]
 
-def get_sequences():
-    return list(range(5))
+def get_sequences(args):
+    max_sequence=1
+    with open(args.infile, "r") as csvfile:
+        reader = csv.DictReader(csvfile, delimiter =';')
+        for row in reader:
+            if int(row["Sequence"]) > max_sequence:
+                max_sequence = int(row["Sequence"])
+
+    return list(range(1,max_sequence + 1))
 
 args = get_args()
 data = get_cov_data(args)
@@ -102,7 +109,7 @@ abbreviations = { "experimental" : "EXP", "control-customactionselection": "CCAS
 fig, ax = plt.subplots()
 ax.set_xlabel('Sequence number')
 ax.set_ylabel('Diff line coverage')
-plt.xticks(get_sequences())
+plt.xticks(get_sequences(args))
 
 for condition_a in get_conditions():
     for condition_b in get_conditions():
@@ -110,7 +117,7 @@ for condition_a in get_conditions():
         if condition_a == condition_b:
             continue
 
-        (x,y) = get_plot_data(comparison_data, condition_a, condition_b)
+        (x,y) = get_plot_data(args, comparison_data, condition_a, condition_b)
         color = color_map[condition_a][condition_b]
         label = label="{} over {}".format(abbreviations[condition_a], abbreviations[condition_b])
         ax.scatter(x, y, c=color, label=label)
