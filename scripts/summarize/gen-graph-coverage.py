@@ -27,7 +27,7 @@ def get_data(args, condition):
         for row in reader:
             if row["Condition"] != condition:
                 continue
-            x.append(row["Sequence"])
+            x.append(int(row["Sequence"]))
             y.append(int(row[args.covcolumn]))
 
     return (x,y)
