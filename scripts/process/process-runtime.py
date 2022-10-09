@@ -8,8 +8,7 @@ import os
 import re
 import sys
 
-outputdir = "/data/studie/af/trial-run"
-fieldnames = ["Experiment", "Condition", "Run", "Runtime"]
+fieldnames = ["Experiment", "Condition", "Run", "Runtime", "Actions"]
 writer = csv.DictWriter(sys.stdout, fieldnames=fieldnames, delimiter = ';')
 writer.writeheader()
 
@@ -40,7 +39,15 @@ for dir in glob(f"{outputdir}/*"):
         else:
             time=str(end_ts-begin_ts)
 
+    actions = 0
+    for seqlog in glob(f"{dir}/*/logs/*.log"):
+        with open (seqlog) as logfile:
+            for line in logfile:
+                if re.search("^ExecutedAction", line):
+                    actions += 1
+
     writer.writerow({ "Experiment"  : exp,
                       "Condition"   : condition,
                       "Run"         : run,
-                      "Runtime"     : time})
+                      "Runtime"     : time,
+                      "Actions"     : actions})
