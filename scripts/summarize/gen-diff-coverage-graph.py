@@ -94,7 +94,7 @@ def get_sequences(args):
             if int(row["Sequence"]) > max_sequence:
                 max_sequence = int(row["Sequence"])
 
-    return list(range(1,max_sequence + 1))
+    return list(range(0, max_sequence + 1))
 
 args = get_args()
 data = get_cov_data(args)
