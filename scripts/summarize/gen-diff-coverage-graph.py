@@ -120,7 +120,7 @@ for condition_a in get_conditions():
         (x,y) = get_plot_data(args, comparison_data, condition_a, condition_b)
         color = color_map[condition_a][condition_b]
         label = label="{} over {}".format(abbreviations[condition_a], abbreviations[condition_b])
-        ax.scatter(x, y, c=color, label=label)
+        ax.plot(x, y, c=color, label=label)
 
 plt.legend(loc='upper left')
 plt.savefig(args.outfile)
