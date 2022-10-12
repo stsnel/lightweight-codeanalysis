@@ -46,11 +46,17 @@ def get_cov_data(args):
 
 def get_cov_data_by_condition(args, condition):
     data = []
+    seen_before = dict()
     with open(args.infile, "r") as csvfile:
         reader = csv.DictReader(csvfile, delimiter =';')
         for row in reader:
             if row["Condition"] == condition:
-                data.append( (row["File"], row["Line"]) )
+                f = row["File"]
+                l = row["Line"]
+                key = f"{f}:{l}"
+                if key not in seen_before:
+                    data.append( (row["File"], row["Line"]) )
+                seen_before[row["File"] + ":" + row["Line"]] = 1
     return data
 
 def get_comparison_data(args, data):
