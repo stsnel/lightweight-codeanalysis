@@ -20,6 +20,8 @@ services:
       - 'static-files:/opt/indico/static'
     tmpfs:
       - /opt/indico/tmp
+    volumes:
+      - "coverage:/coverage"
   indico-static:
     image: 378672356020.dkr.ecr.us-east-1.amazonaws.com/indico-static
     networks:
@@ -63,6 +65,7 @@ volumes:
   archive:
   static-files:
   customization:
+  coverage:
 networks:
   backend: {}
   frontend: {}
