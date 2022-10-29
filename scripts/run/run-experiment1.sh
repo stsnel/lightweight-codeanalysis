@@ -60,7 +60,7 @@ GLOBAL_OPTIONS="sse=$PROTOCOL ShowVisualSettingsDialogOnStartup=false Mode=Gener
 # Look up options for experimental condition
 
 if [ "$CONDITION" == "experimental" ]
-then EXP_OPTIONS="Expcondition=experimental SetLogContext=true SetCoverageContext=true ProcessDataAfterAction=true CompoundTextActionLogicEnabled=true CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
+then EXP_OPTIONS="ExpCondition=experimental SetLogContext=true SetCoverageContext=true ProcessDataAfterAction=true CompoundTextActionLogicEnabled=true CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
 elif [ "$CONDITION" == "plain" ]
 then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false SetCoverageContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false CarryOverCoverage=false StateModelEnabled=false ExportCoverage=false"
 elif [ "$CONDITION" == "control-defaultactionselection" ]
