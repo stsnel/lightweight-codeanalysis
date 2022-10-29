@@ -6,11 +6,23 @@
   ignore_errors: true
 
 
-- name: Pull Docker container images
+- name: Pull CKAN Docker container images
   become: false
   ansible.builtin.shell:
-    chdir: '{{ item }}'
+    chdir: '/data/studie/af/lightweight-codeanalysis/suts/{{ item }}/run'
     cmd: docker-compose pull
   with_items:
-    - /data/studie/af/lightweight-codeanalysis/suts/ckan/run
-    - /data/studie/af/lightweight-codeanalysis/suts/ckan_plain/run
+    - ckan
+    - ckan_plain
+  when: download_sut_ckan
+
+
+- name: Pull Indico Docker container images
+  become: false
+  ansible.builtin.shell:
+    chdir: '/data/studie/af/lightweight-codeanalysis/suts/{{ item }}/run'
+    cmd: docker-compose pull
+  with_items:
+    - indico
+    - indico_plain
+  when: download_sut_indico
