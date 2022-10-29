@@ -3,9 +3,9 @@
 # Runs Testar experiment 1
 # 
 # Settings
-# 1. Protocol: should be webdriver_ckan1
-PROTOCOL=webdriver_ckan1
-# 2. Condition (experimental, control-defaultactionselection, control-customactionselection)
+# 1. System under test: "ckan" or "indico"
+SUT="ckan"
+# 2. Condition (plain, experimental, control-defaultactionselection, control-customactionselection)
 CONDITION=experimental
 # 3. Experiment name
 EXPNAME="test1808"
@@ -28,6 +28,26 @@ ORIENTDB_TESTARDB="testar"
 
 # --- end of settings
 
+BASECOMPOSEDIR="/data/studie/af/lightweight-codeanalysis/suts/"
+if [ "$SUT" == "indico" ]
+then PROTOCOL="webdriver_indico1"
+     if [ "$CONDITION" == "plain" ]
+     then COMPOSESUBDIR="indico_plain"
+     else COMPOSESUBDIR="indico"
+     fi
+elif [ "$SUT" == "ckan" ]
+then PROTOCOL="webdriver_ckan1"
+     if [ "$CONDITION" == "plain" ]
+     then COMPOSESUBDIR="ckan_plain"
+     else COMPOSESUBDIR="ckan"
+     fi
+else echo "Error: unknown SUT $SUT"
+     exit 1
+fi
+
+BASECOMPOSEDIR="/data/studie/af/lightweight-codeanalysis/suts"
+COMPOSEDIR="$BASECOMPOSEDIR/$COMPOSESUBDIR/run"
+
 set -x
 
 # Create data main directory if it doesn't exist
@@ -40,20 +60,20 @@ GLOBAL_OPTIONS="sse=$PROTOCOL ShowVisualSettingsDialogOnStartup=false Mode=Gener
 # Look up options for experimental condition
 
 if [ "$CONDITION" == "experimental" ]
-then EXP_OPTIONS="Expcondition=experimental SetLogContext=true SetCoverageContext=true ProcessDataAfterAction=true CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
+then EXP_OPTIONS="Expcondition=experimental SetLogContext=true SetCoverageContext=true ProcessDataAfterAction=true CompoundTextActionLogicEnabled=true CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
 elif [ "$CONDITION" == "plain" ]
-then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false SetCoverageContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan_plain/run CarryOverCoverage=false StateModelEnabled=false ExportCoverage=false"
+then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false SetCoverageContext=false ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false CarryOverCoverage=false StateModelEnabled=false ExportCoverage=false"
 elif [ "$CONDITION" == "control-defaultactionselection" ]
-then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false SetCoverageContext=true ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
+then EXP_OPTIONS="ExpCondition=control-defaultactionselection SetLogContext=false SetCoverageContext=true ProcessDataAfterAction=false CompoundTextActionLogicEnabled=false CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
 elif [ "$CONDITION" == "control-customactionselection" ]
-then EXP_OPTIONS="ExpCondition=control-customactionselection SetLogContext=false  SetCoverageContext=true ProcessDataAfterAction=false CompoundTextActionLogicEnabled=true DockerComposeDirectory=/data/studie/af/lightweight-codeanalysis/suts/ckan/run CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
+then EXP_OPTIONS="ExpCondition=control-customactionselection SetLogContext=false  SetCoverageContext=true ProcessDataAfterAction=false CompoundTextActionLogicEnabled=true CarryOverCoverage=true StateModelEnabled=true ExportCoverage=true"
 else echo "Error: unknown experimental condition $CONDITION" && exit 1
 fi
 
 for RUN in $(seq "$FIRSTRUN" "$LASTRUN")
 do  DATADIR="$MAINDATADIR/$EXPNAME.$CONDITION.$RUN"
     LOGCONTEXTPREFIX="$EXPNAME.$CONDITION.$RUN"
-    RUN_OPTIONS="CoverageExportDirectory=$DATADIR OutputDir=$DATADIR LogContextPrefix=$LOGCONTEXTPREFIX"
+    RUN_OPTIONS="CoverageExportDirectory=$DATADIR OutputDir=$DATADIR LogContextPrefix=$LOGCONTEXTPREFIX DockerComposeDirectory=$COMPOSEDIR"
     ORIENTDB_EXPORTFILE="$DATADIR/statedb.dump"
 
     # Create data directory
@@ -76,6 +96,7 @@ SETTINGSFILE
 
     ## Run experiment
     cd  /data/studie/af/TESTAR_dev/testar/target/install/testar/bin || exit 1
+    # shellcheck disable=SC2086
     ./testar $GLOBAL_OPTIONS $EXP_OPTIONS $RUN_OPTIONS >& "$DATADIR/experiment.log"
 
     ## Export state database
