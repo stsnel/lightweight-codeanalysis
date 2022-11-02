@@ -59,9 +59,9 @@ for dir in glob(f"{outputdir}/*"):
         for data in bits.fetchall():
             (filename,bits) = data
             num_lines = len(numbits_to_nums(bits))
-            if filename.startswith("/usr/lib/ckan/venv/src/ckan"):
+            if filename.startswith("/usr/lib/ckan/venv/src/ckan") or filename.startswith("/opt/indico/src/indico/"):
                 app_lines += num_lines
-            elif filename.startswith("/usr/lib/python3.8"):
+            elif filename.startswith("/usr/lib/python3."):
                 os_lines += num_lines
             else:
                 print("Warning lines in file of unknown type " + filename + " ignored.")
