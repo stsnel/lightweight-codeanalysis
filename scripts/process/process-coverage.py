@@ -58,6 +58,7 @@ for dir in glob(f"{outputdir}/*"):
         bits = cur.execute("select file.path, line_bits.numbits from file join line_bits on file.id = line_bits.file_id;")
         for data in bits.fetchall():
             (filename,bits) = data
+            filename = filename.replace("/./","/")
             num_lines = len(numbits_to_nums(bits))
             if filename.startswith("/usr/lib/ckan/venv/src/ckan") or filename.startswith("/opt/indico/src/indico/"):
                 app_lines += num_lines
