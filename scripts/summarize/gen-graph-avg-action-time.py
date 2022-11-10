@@ -32,10 +32,13 @@ ax.set_xlabel('Condition')
 ax.set_ylabel('Average time per action (sec)\nincluding instrumentation calls')
 ax.legend("Conditions")
 
-conditions = ["experimental", "control-defaultactionselection", "control-customactionselection", "plain"]
-condition_labels = ["experimental", "control (default AS)", "control (custom AS)", "control (plain)"]
+conditions = ["plain", "control-defaultactionselection", "control-customactionselection", "experimental"]
+condition_labels = ["control (plain)", "control (default AS)", "control (custom AS)", "experimental"]
 condition_values = [ get_average_actiontime(args, condition) for condition in conditions ]
-condition_colors = ["red", "green", "blue", "yellow"]
+condition_colors = ["yellow", "green", "blue", "red"]
+condition_ticks = [0,1,2,3]
 
-ax.bar(condition_labels, condition_values, color=condition_colors)
+ax.bar(condition_ticks, condition_values, color=condition_colors)
+ax.set_xticks(condition_ticks)
+ax.set_xticklabels(condition_labels)
 plt.savefig(args.outfile, bbox_inches='tight')
