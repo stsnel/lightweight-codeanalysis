@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""This script generates a line graph that shows aggregate coverage
+"""This script generates a table that shows aggregate coverage
    for individual conditions, as well as combinations of the experimental
    condition with each control condition."""
 
@@ -15,7 +15,7 @@ import matplotlib.ticker as tick
 def get_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("infile")
-    parser.add_argument("--outfile", "-o", default="covplot.png")
+    parser.add_argument("--outformat", "-o", choices = ["csv","latex"], default = "csv")
     return parser.parse_args()
 
 class LineData:
@@ -66,7 +66,7 @@ def get_plot_data(args, data, conditions):
         for condition in conditions:
             linedata.update(set(get_cov_data_by_condition_seq(args, condition, seq)))
         y.append(len(linedata))
-        print(f"Plot data for {str(conditions)} [{str(seq)}]: " + str(len(linedata)))
+        print(f"data for {str(conditions)} [{str(seq)}]: " + str(len(linedata)))
     return (x,y)
 
 
@@ -98,13 +98,14 @@ fig, ax = plt.subplots()
 ax.set_xlabel('Sequence number')
 ax.set_ylabel('Aggregate line coverage')
 plt.xticks(get_sequences(args))
+condition_data = {}
 
 # Single conditions
 for condition in get_conditions():
     (x,y) = get_plot_data(args, data, [condition])
     color = color_map[condition]
     label = abbreviations[condition]
-    ax.plot(x, y, c=color, label=label, linestyle = "solid")
+    condition_data[label] = dict(enumerate(y))
 
 # Experimental + other condition
 for condition in get_conditions():
@@ -113,7 +114,37 @@ for condition in get_conditions():
     (x,y) = get_plot_data(args, data, ["experimental", condition])
     color = color_map[condition]
     label = abbreviations["experimental"] + " + " + abbreviations[condition]
-    ax.plot(x, y, c=color, label=label, linestyle = "dotted")
+    condition_data[label] = y
 
-plt.legend(loc='best')
-plt.savefig(args.outfile)
+# Print output
+
+if args.outformat == "csv":
+   fieldnames = ["Sequence", "EXP", "CDAS", "CCAS", "EXP + CDAS", "EXP + CCAS"]
+   writer = csv.DictWriter(sys.stdout, fieldnames=fieldnames, delimiter = ';')
+   writer.writeheader()
+   for sequence in get_sequences(args):
+       writer.writerow({ "Sequence" : sequence,
+                         "EXP" : condition_data["EXP"][sequence],
+                         "CDAS" : condition_data["CDAS"][sequence],
+                         "CCAS" : condition_data["CCAS"][sequence],
+                         "EXP + CDAS" : condition_data["EXP + CDAS"][sequence],
+                         "EXP + CCAS" : condition_data["EXP + CCAS"][sequence] } )
+elif args.outformat == "latex":
+   print("\\begin{center}")
+   print("\\begin{tabular}{|l|l|l|l|l|l}")
+   print("\hline")
+   print("Sequence & EXP & CDAS & CCAS & EXP + CDAS & EXP + CCAS \\\\")
+   print("\hline")
+   for sequence in get_sequences(args):
+       print( "{} & {} & {} & {} & {} & {} \\\\".format(
+           sequence,
+           condition_data["EXP"][sequence],
+           condition_data["CDAS"][sequence],
+           condition_data["CCAS"][sequence],
+           condition_data["EXP + CDAS"][sequence],
+           condition_data["EXP + CCAS"][sequence] ) )
+   print("\hline")
+   print("\end{tabular}")
+   print("\end{center}")
+else:
+    print("Error: unknown output format " + args.outformat)
