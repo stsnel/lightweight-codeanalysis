@@ -87,6 +87,7 @@ for dir in glob(f"{outputdir}/*"):
         bits = cur.execute("select file.path, line_bits.numbits from file join line_bits on file.id = line_bits.file_id;")
         for data in bits.fetchall():
             (filename,bits) = data
+            filename = filename.replace("/./","/")
             for line in numbits_to_nums(bits):
                 if not cache.check_seen(condition, sequence_number, filename, line):
                     writer.writerow( { "Condition" : condition,
