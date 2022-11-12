@@ -130,7 +130,7 @@ if args.outformat == "csv":
                          "EXP + CCAS" : condition_data["EXP + CCAS"][sequence] } )
 elif args.outformat == "latex":
    print("\\begin{center}")
-   print("\\begin{tabular}{|l|l|l|l|l|l}")
+   print("\\begin{tabular}{|l|l|l|l|l|l|}")
    print("\hline")
    print("Sequence & EXP & CDAS & CCAS & EXP + CDAS & EXP + CCAS \\\\")
    print("\hline")
