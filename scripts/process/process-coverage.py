@@ -56,10 +56,19 @@ for dir in glob(f"{outputdir}/*"):
         connection = sqlite3.connect("tmp.db")
         cur = connection.cursor()
         bits = cur.execute("select file.path, line_bits.numbits from file join line_bits on file.id = line_bits.file_id;")
+        file_lines = dict()
         for data in bits.fetchall():
             (filename,bits) = data
             filename = filename.replace("/./","/")
-            num_lines = len(numbits_to_nums(bits))
+            lines = set(numbits_to_nums(bits))
+            if filename in file_lines:
+                # We have seen this file before. Count only new lines
+                num_lines = len(lines) - len(lines.intersection(file_lines[filename]))
+                file_lines[filename] = file_lines[filename].union(lines)
+            else:
+                # We have not seen this file before. Count all lines.
+                file_lines[filename] = lines
+                num_lines = len(lines)
             if filename.startswith("/usr/lib/ckan/venv/src/ckan") or filename.startswith("/opt/indico/src/indico/"):
                 app_lines += num_lines
             elif filename.startswith("/usr/lib/python3."):
