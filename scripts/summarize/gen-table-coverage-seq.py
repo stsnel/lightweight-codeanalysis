@@ -61,7 +61,7 @@ elif args.outformat == "latex":
    print("\\begin{center}")
    print("\\begin{tabular}{|l|l|l|l|}")
    print("\hline")
-   print("Sequence number & Control (default AS) & Control (custom AS) & Experimental \\")
+   print("Sequence number & Control (default AS) & Control (custom AS) & Experimental \\\\")
    print("\hline")
    for result in results:
        print( "{} & {} & {} & {} \\\\".format(
