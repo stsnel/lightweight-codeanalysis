@@ -66,7 +66,6 @@ def get_plot_data(args, data, conditions):
         for condition in conditions:
             linedata.update(set(get_cov_data_by_condition_seq(args, condition, seq)))
         y.append(len(linedata))
-        print(f"data for {str(conditions)} [{str(seq)}]: " + str(len(linedata)))
     return (x,y)
 
 
