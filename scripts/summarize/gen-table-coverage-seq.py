@@ -12,11 +12,12 @@ def get_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("infile")
     parser.add_argument("--covcolumn", "-t", choices = ["Application","Total"], default = "Application")
+    parser.add_argument("--aggregate", "-a", choices = ["mean","median"], default = "mean")
     parser.add_argument("--outformat", "-o", choices = ["csv","latex"], default = "csv")
     return parser.parse_args()
 
 
-def get_avg_coverage(args, condition, sequence):
+def get_central_coverage(args, condition, sequence):
     data = []
     with open(args.infile, "r") as csvfile:
         reader = csv.DictReader(csvfile, delimiter =';')
@@ -24,7 +25,12 @@ def get_avg_coverage(args, condition, sequence):
             if row["Condition"] == condition and row["Sequence"] == str(sequence):
                 data.append(int(row[args.covcolumn]))
 
-    return statistics.mean(data)
+    if args.aggregate == "mean":
+        return statistics.mean(data)
+    elif args.aggregate == "median":
+        return statistics.median(data)
+    else:
+        raise Exception("Unknown aggregation method: " + args.aggregate)
 
 def get_sequences(args):
     max_sequence=1
@@ -47,7 +53,7 @@ results = []
 for sequence in sequences:
     result = {}
     for condition, label in conditions.items():
-        result[label] = str(round(get_avg_coverage(args, condition, sequence)))
+        result[label] = str(round(get_central_coverage(args, condition, sequence)))
     result["Sequence"] = sequence
     results.append(result)
 
