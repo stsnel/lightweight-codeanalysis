@@ -41,4 +41,6 @@ for condition in conditions:
     _, _, _ = plt.hist(data, bins=50, color=colormap[condition], label=labelmap[condition], alpha=0.8)
 
 plt.legend(loc='best')
+plt.xlabel('Line coverage per sequence')
+plt.ylabel('N')
 plt.savefig(args.outfile)
